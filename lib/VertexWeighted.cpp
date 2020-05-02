@@ -16,7 +16,7 @@ VertexWeighted<itemType, weightType>::VertexWeighted(itemType item, weightType w
 
 template<typename itemType, typename weightType>
 itemType VertexWeighted<itemType, weightType>::getItem() const {
-    return nullptr;
+    return item;
 } // getItem
 
 template<typename itemType, typename weightType>
