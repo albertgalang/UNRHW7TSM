@@ -56,6 +56,3 @@ void VertexWeighted<itemType, weightType>::setNextVertexPtr(
     nextVertexPtr = vertexPtr;
 } // setNextVertexPtr
 
-
-#include "VertexWeighted.hpp"
-
