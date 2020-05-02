@@ -1,3 +1,4 @@
+#include "VertexWeighted.hpp"
 #include <iostream>
 
 int main() {
