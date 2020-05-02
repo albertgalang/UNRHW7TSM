@@ -1,5 +1,5 @@
 #include "EdgeWeighted.hpp"
-#include "VertexWeighted.hpp"
+#include "NodeWeighted.hpp"
 #include <iostream>
 
 int main() {

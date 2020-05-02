@@ -9,30 +9,30 @@
 #include "INode.hpp"
 
 template <typename itemType, typename weightType>
-class VertexWeighted : INode<itemType>
+class NodeWeighted : INode<itemType>
 {
 private:
     itemType item;
 
     weightType weight;
 
-    std::shared_ptr<VertexWeighted<itemType, weightType>> nextVertexPtr;
+    std::shared_ptr<NodeWeighted<itemType, weightType>> nextNodeWeightedPtr;
 
 public:
     /**
      *
      * @brief Default constructor. Initialize a Vertex object with empty values.
      */
-    VertexWeighted();
+    NodeWeighted();
     /**
      *
      * @brief Overloaded constructor. Initialize a Vertex object with specified values.
      * @param item - set a Vertex item/value.
      * @param weight - set a Vertex weight value.
-     * @param nextVertexPtr - set the next Vertex node link.
+     * @param nextNodeWeightedPtr - set the next Vertex node link.
      */
-    VertexWeighted(itemType item, weightType weight,
-                   const std::shared_ptr<VertexWeighted<itemType, weightType>> &nextVertexPtr);
+    NodeWeighted(itemType item, weightType weight,
+                 const std::shared_ptr<NodeWeighted<itemType, weightType>> &nextNodeWeightedPtr);
     /**
      *
      * @return Vertex item value
@@ -57,20 +57,20 @@ public:
      *
      * @return The next Vertex pointer as a shared pointer object.
      */
-    std::shared_ptr<VertexWeighted<itemType, weightType>> getNextVertexPtr();
+    std::shared_ptr<NodeWeighted<itemType, weightType>> getNextNodeWeightedPtr();
     /**
      *
      * @brief The Vertex pointer is converted into a shared pointer object.
-     * @param vertexPtr - new next Vertex node pointer.
+     * @param nodeWeightedPtr - new next Vertex node pointer.
      */
-    void setNextVertexPtr(const VertexWeighted<itemType, weightType> *vertexPtr);
+    void setNextNodeWeightedPtr(const NodeWeighted<itemType, weightType> *nodeWeightedPtr);
     /**
      *
-     * @param vertexPtr - new next Vertex shared pointer
+     * @param nodeWeightedPtr - new next Vertex shared pointer
      */
-    void setNextVertexPtr(const std::shared_ptr<VertexWeighted<itemType, weightType>> &vertexPtr);
+    void setNextNodeWeightedPtr(const std::shared_ptr<NodeWeighted<itemType, weightType>> &nodeWeightedPtr);
 };
 
 
-#include "VertexWeighted.cpp"
+#include "NodeWeighted.cpp"
 #endif //HW7_NODE_HPP
