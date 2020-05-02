@@ -1,3 +1,4 @@
+#include "EdgeWeighted.hpp"
 #include "VertexWeighted.hpp"
 #include <iostream>
 
