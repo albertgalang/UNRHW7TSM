@@ -5,6 +5,9 @@
 #ifndef HW7_WEIGHTEDGRAPH_HPP
 #define HW7_WEIGHTEDGRAPH_HPP
 
+#include "IWeightedGraph.hpp"
+#include "Vertex.hpp"
+
 template<typename T, typename edgeType> class WeightedGraph; // forward declaration
 /**
  *
@@ -13,11 +16,10 @@ template<typename T, typename edgeType> class WeightedGraph; // forward declarat
  * @tparam edgeType - item type
  */
 template<typename T, typename edgeType>
-class WeightedGraph : IWeightedGraph
+class WeightedGraph : public IWeightedGraph<T, edgeType>
 {
 	private:
 		std::vector<Vertex<T, edgeType>> adjacency_List;
-		WeightedGraph() = default;
 
 		int	vertex_Count;
 		int	edge_Count;
@@ -31,13 +33,13 @@ class WeightedGraph : IWeightedGraph
 		 * @brief Add a vertex to graph
 		 * @param Vertex<T, edgeType> new Vertex to add
 		 */
-		bool	add(Vertex<T, edgeType> a_Vertex);
+		bool	add(Vertex<T, edgeType> a_Vertex) override;
 		/**
 		 *
-		 * @brief Remove a vertex and subsequent edges from graph
+		 * @brief Remove a vertex and subsequent edges from gra:ph
 		 * @param Vertex<T, edgeType> Vertex to be removed
 		 */
-		bool	remove(Vertex<T, edgeType> the_Vertex);
+		bool	remove(Vertex<T, edgeType> the_Vertex) override;
 		/**
 		 *
 		 * @brief Checks to see if graph contains vertices or not
@@ -70,7 +72,7 @@ class WeightedGraph : IWeightedGraph
 		 * @param Vertex<T, edgeType> start_Vertex Start of traversal of graph
 		 * @param void visit(&edgeType) place holder function to return value of vertex at 'visit' of vertex]
 		 */
-		void	BFTraversal(Vertex<T, edgeType> start_Vertex, void visit(&edgeType));
+		void	BFTraversal(Vertex<T, edgeType> start_Vertex, void visit(edgeType&));
 };
 
 #include "WeightedGraph.cpp"
