@@ -2,11 +2,12 @@
 // Created by Albert Galang on 4/28/20.
 // Modified by Matt Facque on 5/02/20.
 
-#ifndef HW7_WEIGHTEDGRAPH_HPP
-#define HW7_WEIGHTEDGRAPH_HPP
+#ifndef _WEIGHTEDGRAPH_HPP
+#define _WEIGHTEDGRAPH_HPP
 
 #include "IWeightedGraph.hpp"
 #include "Vertex.hpp"
+#include "NodeWeighted.hpp"
 
 template<typename T, typename edgeType> class WeightedGraph; // forward declaration
 /**
@@ -20,9 +21,6 @@ class WeightedGraph : public IWeightedGraph<T, edgeType>
 {
 	private:
 		std::vector<Vertex<T, edgeType>> adjacency_List;
-
-		int	vertex_Count;
-		int	edge_Count;
 
 	public:
 		WeightedGraph(); 	// Constructor
@@ -65,7 +63,7 @@ class WeightedGraph : public IWeightedGraph<T, edgeType>
 		 * @param Vertex<T, edgeType> start_Vertex starting vertex
 		 * 	  Vertex<T, edgeType> end_Vertex destination vertex
 		 */
-		int	get_EdgeWeight(Vertex<T, edgeType> start_Vertex, Vertex<T, edgeType> end_Vertex);
+		auto	get_EdgeWeight(Vertex<T, edgeType> start_Vertex, Vertex<T, edgeType> end_Vertex);
 		/**
 		 *
 		 * @brief Traversal to 'visit' every vertex in the graph
