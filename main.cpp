@@ -1,7 +1,12 @@
 #include "Graph.hpp"
 #include <iostream>
 
-int main() {
+int main()
+{
     std::cout << "Hello, World!" << std::endl;
+
+    // create graph
+
+
     return 0;
 }
