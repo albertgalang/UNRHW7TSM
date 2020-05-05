@@ -58,6 +58,14 @@ private:
      * @return  bool
      */
     bool isConnected(const T &V1, const T &V2);
+    /**
+     *
+     * @category Private helper method
+     * @brief Gets the node's position in the adjacency list.
+     * @param node - Node to check
+     * @return The position of the node from the adjacencly list.
+     */
+    int getAdjacencyListPosition(const std::shared_ptr<NodeWeighted<T, weightType>> &node);
 
 public:
     WeightedGraph() = default; 	// Constructor
@@ -95,7 +103,7 @@ public:
      * @brief Returns the number of edges in graph
      * @param null
      */
-    int	get_Edges()override ;
+    int	get_Edges(const std::shared_ptr<NodeWeighted<T, weightType>> &node) override;
     /**
      *
      * @brief Traversal to 'visit' every vertex in the graph
