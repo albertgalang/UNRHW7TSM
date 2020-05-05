@@ -135,3 +135,75 @@ weightType WeightedGraph<T, weightType>::getWeight(const T &from, const T &to)
     }
     return weight;
 }
+
+template<typename T, typename weightType>
+auto WeightedGraph<T, weightType>::find_ShortestPath() {
+    //  Convert adjacency list to matrix [5][5]
+    auto ad_matrix[adjacency_list.size()][adjacency_list.size()];
+
+    //  NodeWeighted ptrs to help in making the matrix
+    NodeWeighted<itemType, weightType>* traversalPtr = nullptr;
+    NodeWeighted<itemType, weightType>* targetPtr = nullptr;
+
+    //  Nested for loops to make ad_matrix
+    for (int i = 0; i < adjacency_list.size(); i++) {
+        traversalPtr = adjacency_list[i];
+        targetPtr = traversalPtr.getNextNodeWeightedPtr();
+
+        for (int j = 0; j < adjacency_list.size(); j++) {
+
+            auto item = targetPtr.getItem();
+
+            if (i == j){
+                ad_matrix[i][j] = 0;
+            }
+            else if (item == "Reno"){                       //  If Reno, 0th column
+                ad_matrix[i][0] = targetPtr.getWeight();
+            }
+            else if (item == "Las Vegas"){                  //  If Las Vegas, 1st column
+                ad_matrix[i][1] = targetPtr.getWeight();
+            }
+            else if (item == "Salt Lake City"){             //  If Salt Lake City, 2nd column
+                ad_matrix[i][2] = targetPtr.getWeight();
+            }
+            else if (item == "Seattle"){                    //  If Seattle, 3rd column
+                ad_matrix[i][3] = targetPtr.getWeight();    
+            }
+            else {                                          //  If San Francisco, 4th column
+                ad_matrix[i][4] = targetPtr.getWeight();    
+            }
+
+            targetPtr = targetPtr.getNextNodeWeightedPtr();
+        }
+
+    }
+
+//  This vector will be used to create the paths, the cities are converted to number values corresponding to columns
+    vector<int> cities                      
+
+    //  Add the cities to travel through to cities vector
+    //  Cities will be cities{1, 2, 3, 4}
+    //  1 - LV, 2 - SLC, 3 - S, 4 - SF
+    for (int i = 0; i < adjacency_list.size() - 1; i++) {
+        cities.push_back(i+1);
+    }
+    
+    auto bestPathWeight = 0;
+
+    //  Do while loop to run permutations and collect best path weight
+    do {
+        auto currentWeight = 0;
+        int start = 0;
+        int path = 0;
+
+        for (int i = 0; i < cities.size(); i++) {
+            currentWeight += ad_matrix[path][cities[i]];
+            path = cities[i];
+        }
+        currentWeight += ad_matrix[path][start];
+        bestPathWeight = std::min(bestPathWeight, currentWeight);
+    }
+    while (next_permutation(cities.begin(), cities.end()));
+
+    return bestPathWeight;
+}
