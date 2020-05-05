@@ -21,7 +21,7 @@ bool WeightedGraph<T, weightType>::addVertex(const Vertex<T, edgeType> &newVerte
             tempPtr->setNextNodeWeightedPtr(newNodePtr);
             tempPtr = tempPtr->getNextNodeWeightedPtr();
         }
-        adjacencyList.push_back(headNodePtr);
+        adjacencyList.emplace_back(headNodePtr);
     }
     return true;
 } // addVertex
@@ -137,57 +137,105 @@ weightType WeightedGraph<T, weightType>::getWeight(const T &from, const T &to)
 }
 
 template<typename T, typename weightType>
-auto WeightedGraph<T, weightType>::find_ShortestPath() {
-    //  Convert adjacency list to matrix [5][5]
-    auto ad_matrix[adjacency_list.size()][adjacency_list.size()];
+weightType WeightedGraph<T, weightType>::find_ShortestPath() {
+    std::cout << "SHORTEST PATH" << std::endl;
 
+    //  Convert adjacency list to matrix [5][5]
+    weightType ad_matrix[adjacencyList.size()][adjacencyList.size()];
+
+    std::cout << "MATRIX BUILT" << std::endl;
     //  NodeWeighted ptrs to help in making the matrix
-    NodeWeighted<itemType, weightType>* traversalPtr = nullptr;
-    NodeWeighted<itemType, weightType>* targetPtr = nullptr;
+    std::shared_ptr<NodeWeighted<T, weightType>> traversalPtr = nullptr;
+    std::shared_ptr<NodeWeighted<T, weightType>> targetPtr = nullptr;
 
     //  Nested for loops to make ad_matrix
-    for (int i = 0; i < adjacency_list.size(); i++) {
-        traversalPtr = adjacency_list[i];
-        targetPtr = traversalPtr.getNextNodeWeightedPtr();
+    for (int i = 0; i < adjacencyList.size(); i++) {
+        traversalPtr = adjacencyList[i];
+//      targetPtr = traversalPtr->getNextNodeWeightedPtr();
+        targetPtr = traversalPtr;
+        auto item = targetPtr->getItem();
+//        std::cout << "ROW ADD" << std::endl;
+//        std::cout << "ROW ITEM = " << item << std::endl;
 
-        for (int j = 0; j < adjacency_list.size(); j++) {
+//        std::cout << "ROW ADD" << std::endl;
 
-            auto item = targetPtr.getItem();
+        for (int j = 0; j < 5; j++) {
 
-            if (i == j){
+            std::cout << "COLUMN ADD" << std::endl;
+
+            auto item = traversalPtr->getItem();
+//            std::cout << "ITEM WEIGHT = " << item << std::endl;
+
+//             if (i == j){
+// //                ad_matrix[i][j] = 0;
+// //                std::cout << "weight = " << ad_matrix[i][j] << std::endl;
+//             }
+//             else if (item == "Reno"){                       //  If Reno, 0th column
+//                 //ad_matrix[i][0] = targetPtr->getWeight();
+//                 ad_matrix[0][j] = 0;
+// //                std::cout << "weight = " << ad_matrix[i][0] << std::endl;
+//             }
+//             else if (item == "Las Vegas"){                  //  If Las Vegas, 1st column
+//                 //ad_matrix[i][1] = targetPtr->getWeight();
+//                 ad_matrix[1][j] = 0;
+// //                std::cout << "weight = " << ad_matrix[i][1] << std::endl;
+//             }
+//             else if (item == "Salt Lake City"){             //  If Salt Lake City, 2nd column
+//                 //ad_matrix[i][2] = targetPtr->getWeight();
+//                 ad_matrix[2][j] = 0;
+// //                std::cout << "weight = " << ad_matrix[i][2] << std::endl;
+//             }
+//             else if (item == "Seattle"){                    //  If Seattle, 3rd column
+//                 //ad_matrix[i][3] = targetPtr->getWeight();
+//                 ad_matrix[3][j] = 0;    
+//  //               std::cout << "weight = " << ad_matrix[i][3] << std::endl;
+//             }
+//             else if (item == "San Francisco") {                                          //  If San Francisco, 4th column
+//                 ad_matrix[4][j] = targetPtr->getWeight();
+//  //               std::cout << "weight = " << ad_matrix[i][4] << std::endl;    
+//             }
+
+//             targetPtr = targetPtr->getNextNodeWeightedPtr();
+
+            enum {R, LV, SLC, S, SF};
+
+
+            if (i == j)
+            {
                 ad_matrix[i][j] = 0;
             }
-            else if (item == "Reno"){                       //  If Reno, 0th column
-                ad_matrix[i][0] = targetPtr.getWeight();
-            }
-            else if (item == "Las Vegas"){                  //  If Las Vegas, 1st column
-                ad_matrix[i][1] = targetPtr.getWeight();
-            }
-            else if (item == "Salt Lake City"){             //  If Salt Lake City, 2nd column
-                ad_matrix[i][2] = targetPtr.getWeight();
-            }
-            else if (item == "Seattle"){                    //  If Seattle, 3rd column
-                ad_matrix[i][3] = targetPtr.getWeight();    
-            }
-            else {                                          //  If San Francisco, 4th column
-                ad_matrix[i][4] = targetPtr.getWeight();    
+            else
+            {
+                auto resolvePosition = getAdjacencyListPosition(targetPtr);
+                ad_matrix[i][resolvePosition] = targetPtr->getWeight();
             }
 
-            targetPtr = targetPtr.getNextNodeWeightedPtr();
+            targetPtr = targetPtr->getNextNodeWeightedPtr();
         }
 
     }
 
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            std::cout << ad_matrix[i][j] << "  ";
+        }
+        std::cout << std::endl;
+    }
+
 //  This vector will be used to create the paths, the cities are converted to number values corresponding to columns
-    vector<int> cities                      
+    std::vector<int> cities;                      
+
+    std::cout << "CITIES VECTOR BUILT" << std::endl;
 
     //  Add the cities to travel through to cities vector
     //  Cities will be cities{1, 2, 3, 4}
     //  1 - LV, 2 - SLC, 3 - S, 4 - SF
-    for (int i = 0; i < adjacency_list.size() - 1; i++) {
+    for (int i = 0; i < adjacencyList.size() - 1; i++) {
         cities.push_back(i+1);
     }
     
+    std::cout << "CITIS w/ INT" << std::endl;
+
     auto bestPathWeight = 0;
 
     //  Do while loop to run permutations and collect best path weight
@@ -196,14 +244,18 @@ auto WeightedGraph<T, weightType>::find_ShortestPath() {
         int start = 0;
         int path = 0;
 
+        std::cout << "DO WHILE LOOP" << std::endl;
+
         for (int i = 0; i < cities.size(); i++) {
             currentWeight += ad_matrix[path][cities[i]];
             path = cities[i];
         }
         currentWeight += ad_matrix[path][start];
         bestPathWeight = std::min(bestPathWeight, currentWeight);
+
     }
     while (next_permutation(cities.begin(), cities.end()));
+    std::cout << "PROBLEM FINISHED" << std::endl;
 
     return bestPathWeight;
 }

@@ -4,53 +4,60 @@
 int main() {
 	std::cout << "Begin test_main" << std::endl << std::endl;
 
-	auto Reno = Vertex<std::string, EdgeWeighted<std::string, int>.make()
+	typedef std::string City;
+	typedef int Miles;
+
+	auto Reno = Vertex<City, EdgeWeighted<City, Miles>>::make()
 				.setVertexValue("Reno")
-				.addEdge(EdgeWeighted<std::string, int>{"Reno", "San Francisco", 218})
-				.addEdge(EdgeWeighted<std::string, int>{"Reno", "Las Vegas", 439})
-				.addEdge(EdgeWeighted<std::string, int>{"Reno", "Seattle", 704})
-				.addEdge(EdgeWeighted<std::string, int>{"Reno", "Salt Lake City", 518})
+				.addEdge(EdgeWeighted<City, Miles>{"Reno", "San Francisco", 218})
+				.addEdge(EdgeWeighted<City, Miles>{"Reno", "Las Vegas", 439})
+				.addEdge(EdgeWeighted<City, Miles>{"Reno", "Seattle", 704})
+				.addEdge(EdgeWeighted<City, Miles>{"Reno", "Salt Lake City", 518})
 				.Build();
-
-	auto Las_Vegas = Vertex<std::string, EdgeWeighted<std::string, int>>.make()
+ 
+	auto Las_Vegas = Vertex<City, EdgeWeighted<City, Miles>>::make()
 				.setVertexValue("Las Vegas")
-				.addEdge(EdgeWeighted<std::string, int>{"Las Vegas", "Reno", 439})
-				.addEdge(EdgeWeighted<std::string, int>{"Las Vegas", "San Francisco", 569})
-				.addEdge(EdgeWeighted<std::string, int>{"Las Vegas", "Salt Lake City", 421})
-				.addEdge(EdgeWeighted<std::string, int>{"Las Vegas", "Seattle", 1143})
+				.addEdge(EdgeWeighted<City, Miles>{"Las Vegas", "Reno", 439})
+				.addEdge(EdgeWeighted<City, Miles>{"Las Vegas", "San Francisco", 569})
+				.addEdge(EdgeWeighted<City, Miles>{"Las Vegas", "Salt Lake City", 421})
+				.addEdge(EdgeWeighted<City, Miles>{"Las Vegas", "Seattle", 1143})
 				.Build();
 
-	auto Salt_Lake_City = Vertex<std::string, EdgeWeighted<std::string, int>>.make()
+	auto Salt_Lake_City = Vertex<City, EdgeWeighted<City, Miles>>::make()
 				.setVertexValue("Salt Lake City")
-				.addEdge(EdgeWeighted<std::string, int>{"Salt Lake City", "Reno", 518})
-				.addEdge(EdgeWeighted<std::string, int>{"Salt Lake City", "Las Vegas", 421})
-				.addEdge(EdgeWeighted<std::string, int>{"Salt Lake City", "San Francisco", 736})
-				.addEdge(EdgeWeighted<std::string, int>{"Salt Lake City", "Seattle", 838})
+				.addEdge(EdgeWeighted<City, Miles>{"Salt Lake City", "Reno", 518})
+				.addEdge(EdgeWeighted<City, Miles>{"Salt Lake City", "Las Vegas", 421})
+				.addEdge(EdgeWeighted<City, Miles>{"Salt Lake City", "San Francisco", 736})
+				.addEdge(EdgeWeighted<City, Miles>{"Salt Lake City", "Seattle", 838})
 				.Build();
 
-	auto San_Francisco = Vertex<std::string, EdgeWeighted<std::string, int>>.make()
+	auto San_Francisco = Vertex<City, EdgeWeighted<City, Miles>>::make()
 				.setVertexValue("San Francisco")
-				.addEdge(EdgeWeighted<std::string, int>{"San Francisco", "Reno", 218})
-				.addEdge(EdgeWeighted<std::string, int>{"San Francisco", "Las Vegas", 569})
-				.addEdge(EdgeWeighted<std::string, int>{"San Francisco", "Salt Lake City", 736})
-				.addEdge(EdgeWeighted<std::string, int>{"San Francisco", "Seattle", 808})
-
-	auto Seattle = Vertex<std::string, EdgeWeighted<std::string, int>>.make()
-				.setVertexValue("Seattle")
-				.addEdge(EdgeWeighted<std::string, int>{"Seattle", "Reno", 704})
-				.addEdge(EdgeWeighted<std::string, int>{"Seattle", "Las Vegas", 1143})
-				.addEdge(EdgeWeighted<std::string, int>{"Seattle", "Salt Lake City", 838})
-				.addEdge(EdgeWeighted<std::string, int>{"Seattle", "San Francisco", 808})
+				.addEdge(EdgeWeighted<City, Miles>{"San Francisco", "Reno", 218})
+				.addEdge(EdgeWeighted<City, Miles>{"San Francisco", "Las Vegas", 569})
+				.addEdge(EdgeWeighted<City, Miles>{"San Francisco", "Salt Lake City", 736})
+				.addEdge(EdgeWeighted<City, Miles>{"San Francisco", "Seattle", 808})
 				.Build();
 
-	auto Graph = WeightedGraph<std::string, EdgeWeighted<std::string, int>>();
+	auto Seattle = Vertex<City, EdgeWeighted<City, Miles>>::make()
+				.setVertexValue("Seattle")
+				.addEdge(EdgeWeighted<City, Miles>{"Seattle", "Reno", 704})
+				.addEdge(EdgeWeighted<City, Miles>{"Seattle", "Las Vegas", 1143})
+				.addEdge(EdgeWeighted<City, Miles>{"Seattle", "Salt Lake City", 838})
+				.addEdge(EdgeWeighted<City, Miles>{"Seattle", "San Francisco", 808})
+				.Build();
+
+	auto graph = WeightedGraph<City, Miles>();
 	graph.addVertex(Reno);
 	graph.addVertex(Las_Vegas);
 	graph.addVertex(Salt_Lake_City);
 	graph.addVertex(Seattle);
 	graph.addVertex(San_Francisco);
 
-	auto total_miles = Graph.find_ShortestPath();
+	auto total_miles = graph.find_ShortestPath();
+
 
 	std::cout << "Best path mileage = " << total_miles << std::endl;
-	
+	return 0;
+};
+

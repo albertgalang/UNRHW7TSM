@@ -9,7 +9,10 @@
 #include "IWeightedGraph.hpp"
 #include "Vertex.hpp"
 #include <memory>
+#include <algorithm>
+#include <vector>
 #include <fstream>
+#include <iostream>
 
 //fstream fout;
 //fout.open("Final_Txt.txt", ios::out)
@@ -25,7 +28,7 @@ template<typename T, typename weightType>
 class WeightedGraph : public IWeightedGraph<T, weightType>
 {
 private:
-    std::vector<NodeWeighted<T, weightType>> adjacencyList;
+    std::vector<std::shared_ptr<NodeWeighted<T, weightType>>> adjacencyList;
 
     int	vertex_Count;
     int	edge_Count;
@@ -73,7 +76,7 @@ public:
      * @brief Remove a vertex and subsequent edges from gra:ph
      * @param Vertex<T, edgeType> Vertex to be removed
      */
-    bool	remove(const NodeWeighted<T, weightType> &vertex) override;
+    bool remove(const NodeWeighted<T, weightType> &vertex) override;
     /**
      *
      * @brief Checks to see if graph contains vertices or not
