@@ -22,7 +22,7 @@ class IWeightedGraph
 		virtual bool remove(const NodeWeighted<T, weightType> &vertex) = 0;
 		virtual bool is_Empty() = 0;
 		virtual int  get_Vertices()  = 0;
-		virtual int  get_Edges() = 0;
+		virtual int  get_Edges(const std::shared_ptr<NodeWeighted<T, weightType>> &node) = 0;
 //		virtual int  get_Edgeweight(Vertex<T, weightType> start_Vertex, Vertex<T, weightType> end_Vertex) = 0;
 };
 

@@ -45,9 +45,12 @@ int WeightedGraph<T, weightType>::get_Vertices()
 } // get_Vertices
 
 template<typename T, typename weightType>
-int WeightedGraph<T, weightType>::get_Edges()
+int WeightedGraph<T, weightType>::get_Edges(const std::shared_ptr<NodeWeighted<T, weightType>> &node)
 {
-    return 0;
+    int edgesCount = 0;
+    auto targetPtr = node;
+    while (targetPtr != nullptr) ++edgesCount;
+    return edgesCount;
 } // get_Edges
 
 template<typename T, typename weightType>

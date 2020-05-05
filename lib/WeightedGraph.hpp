@@ -88,7 +88,7 @@ public:
      * @brief Returns the number of edges in graph
      * @param null
      */
-    int	get_Edges()override ;
+    int	get_Edges(const std::shared_ptr<NodeWeighted<T, weightType>> &node) override;
     /**
      *
      * @brief Traversal to 'visit' every vertex in the graph
