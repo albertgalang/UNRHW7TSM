@@ -55,6 +55,14 @@ private:
      * @return  bool
      */
     bool isConnected(const T &V1, const T &V2);
+    /**
+     *
+     * @category Private helper method
+     * @brief Gets the node's position in the adjacency list.
+     * @param node - Node to check
+     * @return The position of the node from the adjacencly list.
+     */
+    int getAdjacencyListPosition(const std::shared_ptr<NodeWeighted<T, weightType>> &node);
 
 public:
     WeightedGraph() = default; 	// Constructor

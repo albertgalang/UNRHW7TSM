@@ -29,19 +29,22 @@ bool WeightedGraph<T, weightType>::addVertex(const Vertex<T, edgeType> &newVerte
 template<typename T, typename weightType>
 bool WeightedGraph<T, weightType>::remove(const NodeWeighted<T, weightType> &vertex)
 {
+    auto node = vertex;
+    auto position = getAdjacencyListPosition(node);
+    adjacencyList.erase(adjacencyList.begin()+position);
     return false;
 } // remove
 
 template<typename T, typename weightType>
 bool WeightedGraph<T, weightType>::is_Empty()
 {
-    return false;
+    return adjacencyList.empty();
 } // is_Empty
 
 template<typename T, typename weightType>
 int WeightedGraph<T, weightType>::get_Vertices()
 {
-    return 0;
+    return adjacencyList.size();
 } // get_Vertices
 
 template<typename T, typename weightType>
@@ -210,3 +213,14 @@ auto WeightedGraph<T, weightType>::find_ShortestPath() {
 
     return bestPathWeight;
 }
+
+template<typename T, typename weightType>
+int WeightedGraph<T, weightType>::getAdjacencyListPosition(const std::shared_ptr<NodeWeighted<T, weightType>> &node)
+{
+    auto value = node->getItem();
+    for (size_t i = 0; i < adjacencyList.size(); i++)
+    {
+        if (adjacencyList[i]->getItem() == value) return i;
+    }
+    return -1;
+} // getAdjacencyListPosition
