@@ -5,8 +5,10 @@
 #ifndef HW7_WEIGHTEDGRAPH_HPP
 #define HW7_WEIGHTEDGRAPH_HPP
 
+#include "NodeWeighted.hpp"
 #include "IWeightedGraph.hpp"
 #include "Vertex.hpp"
+#include <memory>
 
 template<typename T, typename edgeType> class WeightedGraph; // forward declaration
 /**
@@ -15,64 +17,102 @@ template<typename T, typename edgeType> class WeightedGraph; // forward declarat
  * @tparam T - item type
  * @tparam edgeType - item type
  */
-template<typename T, typename edgeType>
-class WeightedGraph : public IWeightedGraph<T, edgeType>
+template<typename T, typename weightType>
+class WeightedGraph : public IWeightedGraph<T, weightType>
 {
-	private:
-		std::vector<Vertex<T, edgeType>> adjacency_List;
+private:
+    std::vector<NodeWeighted<T, weightType>> adjacencyList;
 
-		int	vertex_Count;
-		int	edge_Count;
+    int	vertex_Count;
+    int	edge_Count;
 
-	public:
-		WeightedGraph(); 	// Constructor
-		~WeightedGraph();	// Destructor
+    /**
+     *
+     * @category Private helper method
+     * @brief Check for existing Vertex in the adjacency list.
+     * @param item
+     * @return
+     */
+    template <typename edgeType>
+    bool adjacencyListHas(const Vertex<T, edgeType> &V);
+    /**
+     *
+     * @brief Check if vertex are connectec
+     * @param V1  - vertex type
+     * @param V2  - vertex type
+     * @return  - bool
+     */
+    bool isConnected(const std::shared_ptr<NodeWeighted<T, weightType>> &V1, const std::shared_ptr<NodeWeighted<T, weightType>> &V2);
+    /**
+     *
+     * @brief check if vertex are connected by value
+     * @param V1  - value type
+     * @param V2  - value type
+     * @return  bool
+     */
+    bool isConnected(const T &V1, const T &V2);
 
-		/**
-		 *
-		 * @brief Add a vertex to graph
-		 * @param Vertex<T, edgeType> new Vertex to add
-		 */
-		bool	add(Vertex<T, edgeType> a_Vertex) override;
-		/**
-		 *
-		 * @brief Remove a vertex and subsequent edges from gra:ph
-		 * @param Vertex<T, edgeType> Vertex to be removed
-		 */
-		bool	remove(Vertex<T, edgeType> the_Vertex) override;
-		/**
-		 *
-		 * @brief Checks to see if graph contains vertices or not
-		 * @param null
-		 * @return If no vertices (empty), return true otherwise false
-		 */
-		bool	is_Empty();
-		/**
-		 *
-		 * @brief Returns the number of vertices in graph
-		 * @param null
-		 */
-		int	get_Vertices();
-		/**
-		 *
-		 * @brief Returns the number of edges in graph
-		 * @param null
-		 */
-		int	get_Edges();
-		/**
-		 *
-		 * @brief Returns the associated weight to the edge in question
-		 * @param Vertex<T, edgeType> start_Vertex starting vertex
-		 * 	  Vertex<T, edgeType> end_Vertex destination vertex
-		 */
-		int	get_EdgeWeight(Vertex<T, edgeType> start_Vertex, Vertex<T, edgeType> end_Vertex);
-		/**
-		 *
-		 * @brief Traversal to 'visit' every vertex in the graph
-		 * @param Vertex<T, edgeType> start_Vertex Start of traversal of graph
-		 * @param void visit(&edgeType) place holder function to return value of vertex at 'visit' of vertex]
-		 */
-		void	BFTraversal(Vertex<T, edgeType> start_Vertex, void visit(edgeType&));
+public:
+    WeightedGraph() = default; 	// Constructor
+    ~WeightedGraph() = default;	// Destructor
+   /**
+    *
+    * @tparam edgeType
+    * @param newVertex
+    * @return
+    *
+    */
+    template <typename edgeType>
+    bool addVertex(const Vertex<T, edgeType> &newVertex);
+    /**
+     *
+     * @brief Remove a vertex and subsequent edges from gra:ph
+     * @param Vertex<T, edgeType> Vertex to be removed
+     */
+    bool	remove(const NodeWeighted<T, weightType> &vertex) override;
+    /**
+     *
+     * @brief Checks to see if graph contains vertices or not
+     * @param null
+     * @return If no vertices (empty), return true otherwise false
+     */
+    bool is_Empty() override;
+    /**
+     *
+     * @brief Returns the number of vertices in graph
+     * @param null
+     */
+    int	get_Vertices() override ;
+    /**
+     *
+     * @brief Returns the number of edges in graph
+     * @param null
+     */
+    int	get_Edges()override ;
+    /**
+     *
+     * @brief Traversal to 'visit' every vertex in the graph
+     * @param Vertex<T, edgeType> start_Vertex Start of traversal of graph
+     * @param void visit(&edgeType) place holder function to return value of vertex at 'visit' of vertex]
+     */
+    template<typename edgeType>
+    void BFTraversal(Vertex<T, edgeType> start_Vertex, void visit(edgeType&));
+    /**
+     *
+     * @brief get weight between vertex by node type
+     * @param from - shared pointer node type
+     * @param to  - shared pointer node type
+     * @return  weight type
+     */
+    weightType getWeight(const std::shared_ptr<NodeWeighted<T, weightType>> &from, const std::shared_ptr<NodeWeighted<T, weightType>> &to);
+    /**
+     *
+     * @brief get weight between vertex by value
+     * @param from  value type
+     * @param to  value type
+     * @return  weight type
+     */
+    weightType getWeight(const T &from, const T&to);
 };
 
 #include "WeightedGraph.cpp"

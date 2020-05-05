@@ -1,6 +1,4 @@
-#include "Vertex.hpp"
-//#include "EdgeWeighted.hpp"
-#include "NodeWeighted.hpp"
+#include "Graph.hpp"
 #include <iostream>
 
 int main() {
