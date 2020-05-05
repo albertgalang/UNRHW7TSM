@@ -9,6 +9,10 @@
 #include "IWeightedGraph.hpp"
 #include "Vertex.hpp"
 #include <memory>
+#include <fstream>
+
+//fstream fout;
+//fout.open("Final_Txt.txt", ios::out)
 
 template<typename T, typename edgeType> class WeightedGraph; // forward declaration
 /**
@@ -113,6 +117,13 @@ public:
      * @return  weight type
      */
     weightType getWeight(const T &from, const T&to);
+    /**
+     *
+     * @brief Find best path weight
+     * @param null
+     * @return weight
+     */
+     weightType find_ShortestPath();
 };
 
 #include "WeightedGraph.cpp"
