@@ -19,7 +19,7 @@ class IWeightedGraph
 		virtual ~IWeightedGraph() = default;
 
 		//virtual bool add(Vertex<T, weightType> a_Vertex) = 0;
-		virtual bool remove(const NodeWeighted<T, weightType> &vertex) = 0;
+		virtual bool remove(const std::shared_ptr<NodeWeighted<T, weightType>> &vertex) = 0;
 		virtual bool is_Empty() = 0;
 		virtual int  get_Vertices()  = 0;
 		virtual int  get_Edges(const std::shared_ptr<NodeWeighted<T, weightType>> &node) = 0;

@@ -27,7 +27,7 @@ bool WeightedGraph<T, weightType>::addVertex(const Vertex<T, edgeType> &newVerte
 } // addVertex
 
 template<typename T, typename weightType>
-bool WeightedGraph<T, weightType>::remove(const NodeWeighted<T, weightType> &vertex)
+bool WeightedGraph<T, weightType>::remove(const std::shared_ptr<NodeWeighted<T, weightType>> &vertex)
 {
     auto node = vertex;
     auto position = getAdjacencyListPosition(node);
@@ -144,21 +144,41 @@ weightType WeightedGraph<T, weightType>::getWeight(const T &from, const T &to)
 
 template<typename T, typename weightType>
 weightType WeightedGraph<T, weightType>::find_ShortestPath() {
-    std::cout << "SHORTEST PATH" << std::endl;
+//    std::cout << "SHORTEST PATH" << std::endl;
+
+    std::fstream fout;
+    fout.open("Final_Txt.txt", std::ios::out);
+
+    for (auto& linkedNode : adjacencyList)
+    {
+        auto headNodePtr = linkedNode->getNextNodeWeightedPtr();
+        while (headNodePtr != nullptr)
+        {
+            std::cout << linkedNode->getItem() << " -> " << headNodePtr->getItem() << " = " << headNodePtr->getWeight() << std::endl;
+            fout << linkedNode->getItem() << " -> " << headNodePtr->getItem() << " = " << headNodePtr->getWeight() << std::endl;
+            headNodePtr = headNodePtr->getNextNodeWeightedPtr();
+        }
+    }
 
     //  Convert adjacency list to matrix [5][5]
     weightType ad_matrix[adjacencyList.size()][adjacencyList.size()];
 
-    std::cout << "MATRIX BUILT" << std::endl;
+    for (size_t i = 0; i < adjacencyList.size(); i++)
+    {
+        for (size_t j = 0; j < adjacencyList.size(); j++)
+            ad_matrix[i][j] = 0;
+    }
+
+ //   std::cout << "MATRIX BUILT" << std::endl;
     //  NodeWeighted ptrs to help in making the matrix
-    std::shared_ptr<NodeWeighted<T, weightType>> traversalPtr = nullptr;
-    std::shared_ptr<NodeWeighted<T, weightType>> targetPtr = nullptr;
+    //std::shared_ptr<NodeWeighted<T, weightType>> traversalPtr = nullptr;
+    //std::shared_ptr<NodeWeighted<T, weightType>> targetPtr = nullptr;
 
     //  Nested for loops to make ad_matrix
     for (int i = 0; i < adjacencyList.size(); i++) {
-        traversalPtr = adjacencyList[i];
+        auto traversalPtr = adjacencyList[i];
 //      targetPtr = traversalPtr->getNextNodeWeightedPtr();
-        targetPtr = traversalPtr;
+        auto targetPtr = traversalPtr;
         auto item = targetPtr->getItem();
 //        std::cout << "ROW ADD" << std::endl;
 //        std::cout << "ROW ITEM = " << item << std::endl;
@@ -167,55 +187,13 @@ weightType WeightedGraph<T, weightType>::find_ShortestPath() {
 
         for (int j = 0; j < 5; j++) {
 
-            std::cout << "COLUMN ADD" << std::endl;
+//            std::cout << "COLUMN ADD" << std::endl;
 
             auto item = traversalPtr->getItem();
-//            std::cout << "ITEM WEIGHT = " << item << std::endl;
-
-//             if (i == j){
-// //                ad_matrix[i][j] = 0;
-// //                std::cout << "weight = " << ad_matrix[i][j] << std::endl;
-//             }
-//             else if (item == "Reno"){                       //  If Reno, 0th column
-//                 //ad_matrix[i][0] = targetPtr->getWeight();
-//                 ad_matrix[0][j] = 0;
-// //                std::cout << "weight = " << ad_matrix[i][0] << std::endl;
-//             }
-//             else if (item == "Las Vegas"){                  //  If Las Vegas, 1st column
-//                 //ad_matrix[i][1] = targetPtr->getWeight();
-//                 ad_matrix[1][j] = 0;
-// //                std::cout << "weight = " << ad_matrix[i][1] << std::endl;
-//             }
-//             else if (item == "Salt Lake City"){             //  If Salt Lake City, 2nd column
-//                 //ad_matrix[i][2] = targetPtr->getWeight();
-//                 ad_matrix[2][j] = 0;
-// //                std::cout << "weight = " << ad_matrix[i][2] << std::endl;
-//             }
-//             else if (item == "Seattle"){                    //  If Seattle, 3rd column
-//                 //ad_matrix[i][3] = targetPtr->getWeight();
-//                 ad_matrix[3][j] = 0;    
-//  //               std::cout << "weight = " << ad_matrix[i][3] << std::endl;
-//             }
-//             else if (item == "San Francisco") {                                          //  If San Francisco, 4th column
-//                 ad_matrix[4][j] = targetPtr->getWeight();
-//  //               std::cout << "weight = " << ad_matrix[i][4] << std::endl;    
-//             }
-
-//             targetPtr = targetPtr->getNextNodeWeightedPtr();
-
-            enum {R, LV, SLC, S, SF};
-
-
-            if (i == j)
-            {
-                ad_matrix[i][j] = 0;
-            }
-            else
-            {
-                auto resolvePosition = getAdjacencyListPosition(targetPtr);
-                ad_matrix[i][resolvePosition] = targetPtr->getWeight();
-            }
-
+//          std::cout << "ITEM WEIGHT = " << item << std::endl;
+            auto resolvePosition = getAdjacencyListPosition(targetPtr);
+            //ad_matrix[i][resolvePosition] = targetPtr->getWeight();
+            ad_matrix[i][resolvePosition] = targetPtr->getWeight();
             targetPtr = targetPtr->getNextNodeWeightedPtr();
         }
 
@@ -223,7 +201,7 @@ weightType WeightedGraph<T, weightType>::find_ShortestPath() {
 
     for (int i = 0; i < 5; i++) {
         for (int j = 0; j < 5; j++) {
-            std::cout << ad_matrix[i][j] << "  ";
+            std::cout << ad_matrix[i][j] << "  \t";
         }
         std::cout << std::endl;
     }
@@ -231,7 +209,7 @@ weightType WeightedGraph<T, weightType>::find_ShortestPath() {
 //  This vector will be used to create the paths, the cities are converted to number values corresponding to columns
     std::vector<int> cities;                      
 
-    std::cout << "CITIES VECTOR BUILT" << std::endl;
+  //  std::cout << "CITIES VECTOR BUILT" << std::endl;
 
     //  Add the cities to travel through to cities vector
     //  Cities will be cities{1, 2, 3, 4}
@@ -240,28 +218,59 @@ weightType WeightedGraph<T, weightType>::find_ShortestPath() {
         cities.push_back(i+1);
     }
     
-    std::cout << "CITIS w/ INT" << std::endl;
+//    std::cout << "CITIS w/ INT" << std::endl;
 
     auto bestPathWeight = 0;
 
     //  Do while loop to run permutations and collect best path weight
     do {
+        auto current_minWeight = 0;
         auto currentWeight = 0;
         int start = 0;
         int path = 0;
 
-        std::cout << "DO WHILE LOOP" << std::endl;
+        std::cout << "Reno -> ";
+        fout << "Reno -> ";
+        for (int i = 0; i < cities.size(); i++) {
+            if (cities[i] == 1){
+                std::cout << "Las Vegas -> ";
+                fout << "Las Vegas -> ";
+            }
+            else if (cities[i] == 2){
+                std::cout << "Salt Lake City -> ";
+                fout << "Salt Lake City -> ";
+            }
+            else if (cities[i] == 3){
+                std::cout << "Seattle -> ";
+                fout << "Seattle -> ";
+            }
+            else if (cities[i] == 4){
+                std::cout << "San Francisco -> ";
+                fout << "San Francisco -> ";
+            }
+        }
+        std::cout << "Reno" << std::endl;
+        fout << "Reno" << std::endl;
+
+//        std::cout << "DO WHILE LOOP" << std::endl;
 
         for (int i = 0; i < cities.size(); i++) {
             currentWeight += ad_matrix[path][cities[i]];
             path = cities[i];
         }
         currentWeight += ad_matrix[path][start];
-        bestPathWeight = std::min(bestPathWeight, currentWeight);
+        std::cout << "Current path weight = " << currentWeight << std::endl;
+        fout << "Current path weight = " << currentWeight << std::endl;
+        std::cout << std::endl;
+        fout << std::endl;
+        current_minWeight = currentWeight;
+        bestPathWeight = std::min(current_minWeight, currentWeight);
 
     }
     while (next_permutation(cities.begin(), cities.end()));
-    std::cout << "PROBLEM FINISHED" << std::endl;
+ //   std::cout << "PROBLEM FINISHED" << std::endl;
+
+    fout.close();
 
     return bestPathWeight;
 }

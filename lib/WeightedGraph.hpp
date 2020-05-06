@@ -84,7 +84,7 @@ public:
      * @brief Remove a vertex and subsequent edges from gra:ph
      * @param Vertex<T, edgeType> Vertex to be removed
      */
-    bool remove(const NodeWeighted<T, weightType> &vertex) override;
+    bool remove(const std::shared_ptr<NodeWeighted<T, weightType>> &vertex) override;
     /**
      *
      * @brief Checks to see if graph contains vertices or not

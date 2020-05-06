@@ -14,7 +14,7 @@ int main() {
 				.addEdge(EdgeWeighted<City, Miles>{"Reno", "Seattle", 704})
 				.addEdge(EdgeWeighted<City, Miles>{"Reno", "Salt Lake City", 518})
 				.Build();
- 
+
 	auto Las_Vegas = Vertex<City, EdgeWeighted<City, Miles>>::make()
 				.setVertexValue("Las Vegas")
 				.addEdge(EdgeWeighted<City, Miles>{"Las Vegas", "Reno", 439})
@@ -56,8 +56,8 @@ int main() {
 
 	auto total_miles = graph.find_ShortestPath();
 
-
-	std::cout << "Best path mileage = " << total_miles << std::endl;
+	std::cout << "Best Path = " << total_miles << std::endl;
+	
 	return 0;
 };
 
