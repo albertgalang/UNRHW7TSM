@@ -56,7 +56,7 @@ int main() {
 	auto total_miles = graph.find_ShortestPath();
 
 	std::cout << "Best Path total miles = " << total_miles << " miles" << std::endl;
-	
+
 	return 0;
 };
 
