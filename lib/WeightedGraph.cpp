@@ -158,6 +158,8 @@ weightType WeightedGraph<T, weightType>::find_ShortestPath() {
             fout << linkedNode->getItem() << " -> " << headNodePtr->getItem() << " = " << headNodePtr->getWeight() << std::endl;
             headNodePtr = headNodePtr->getNextNodeWeightedPtr();
         }
+        std::cout << std::endl;
+        fout << std::endl;
     }
 
     //  Convert adjacency list to matrix [5][5]
@@ -199,15 +201,16 @@ weightType WeightedGraph<T, weightType>::find_ShortestPath() {
 
     }
 
-    for (int i = 0; i < 5; i++) {
-        for (int j = 0; j < 5; j++) {
-            std::cout << ad_matrix[i][j] << "  \t";
-        }
-        std::cout << std::endl;
-    }
+//    for (int i = 0; i < 5; i++) {
+//        for (int j = 0; j < 5; j++) {
+//            std::cout << ad_matrix[i][j] << "  \t";
+//        }
+//        std::cout << std::endl;
+//   }
 
 //  This vector will be used to create the paths, the cities are converted to number values corresponding to columns
-    std::vector<int> cities;                      
+    std::vector<int> cities;                    
+    std::vector<int> best_cities;
 
   //  std::cout << "CITIES VECTOR BUILT" << std::endl;
 
@@ -221,10 +224,11 @@ weightType WeightedGraph<T, weightType>::find_ShortestPath() {
 //    std::cout << "CITIS w/ INT" << std::endl;
 
     auto bestPathWeight = 0;
+    auto current_minWeight = 10000;
 
     //  Do while loop to run permutations and collect best path weight
     do {
-        auto current_minWeight = 0;
+//      auto current_minWeight = 0;
         auto currentWeight = 0;
         int start = 0;
         int path = 0;
@@ -263,13 +267,50 @@ weightType WeightedGraph<T, weightType>::find_ShortestPath() {
         fout << "Current path weight = " << currentWeight << std::endl;
         std::cout << std::endl;
         fout << std::endl;
-        current_minWeight = currentWeight;
+//      current_minWeight = currentWeight;
+        if (currentWeight < current_minWeight){
+            current_minWeight = currentWeight;
+            for (int i = 0; i < cities.size(); i++){
+                best_cities.push_back(cities[i]);
+            }
+        }
         bestPathWeight = std::min(current_minWeight, currentWeight);
 
     }
     while (next_permutation(cities.begin(), cities.end()));
  //   std::cout << "PROBLEM FINISHED" << std::endl;
 
+    auto gallons = bestPathWeight / 40;
+
+//  Output the path of the best combination of cities
+    std::cout << "Best Path (cities): ";
+    fout << "Best Path (cities): ";
+    std::cout << "Reno -> ";
+    fout << "Reno -> ";
+    for (int i = 0; i < best_cities.size(); i++) {
+        if (best_cities[i] == 1){
+            std::cout << "Las Vegas -> ";
+            fout << "Las Vegas -> ";
+        }
+        else if (best_cities[i] == 2){
+            std::cout << "Salt Lake City -> ";
+            fout << "Salt Lake City -> ";
+        }
+        else if (best_cities[i] == 3){
+            std::cout << "Seattle -> ";
+            fout << "Seattle -> ";
+        }
+        else if (best_cities[i] == 4){
+            std::cout << "San Francisco -> ";
+            fout << "San Francisco -> ";
+        }
+    }
+    std::cout << "Reno" << std::endl;
+    fout << "Reno" << std::endl;
+
+    fout << "Best Path (miles): " << bestPathWeight << std::endl;
+    std::cout << "Gallons of gas used: " << gallons << std::endl;
+    fout << "Gallons of gas used: " << gallons << std::endl;
     fout.close();
 
     return bestPathWeight;

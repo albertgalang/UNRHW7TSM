@@ -2,7 +2,7 @@
 #include <iostream>
 
 int main() {
-	std::cout << "Begin test_main" << std::endl << std::endl;
+//	std::cout << "Begin test_main" << std::endl << std::endl;
 
 	typedef std::string City;
 	typedef int Miles;
@@ -56,7 +56,7 @@ int main() {
 
 	auto total_miles = graph.find_ShortestPath();
 
-	std::cout << "Best Path = " << total_miles << std::endl;
+	std::cout << "Best Path: " << total_miles << " miles" << std::endl;
 	
 	return 0;
 };
